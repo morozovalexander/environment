@@ -15,32 +15,33 @@ A [Dockerized](https://www.docker.com) development environment for applications 
 
 ## Quick Start
 
-1. Clone repository to your local machine  
+1. Define environment variable with absolute path to the application root directory
     ```
-    git clone git@github.com:laboro/dev.git ~/orodev
+    export ORO_APP=$(realpath ~/pathtoyour/projectname)
+    ```
+    > This variable is required
+
+2. Clone repository to your local machine  
+    ```
+    git clone git@github.com:morozovalexander/environment.git $ORO_APP
     ```
   
-2. Configure GitHub token for current project. To retrieve new token [follow by this link](https://github.com/settings/tokens/new?scopes=repo&description=Composer+OroEnv).
+3. Configure GitHub token for current project. To retrieve new token [follow by this link](https://github.com/settings/tokens/new?scopes=repo&description=Composer+OroEnv).
     ```
-    docker run -v $(realpath ~/orodev)/environment/.composer/auth/:/usr/local/composer/auth oroinc/composer:1.4 config -g github-oauth.github.com <YOUR_GITHUB_AUTH_TOKEN>
-    ```
-
-3. Define environment variable with absolute path to the application root directory
-    ```
-    export ORO_APP=$(realpath ~/orodev)/application/commerce-crm-ee
+    docker run -v $ORO_APP/environment/.composer/auth/:/usr/local/composer/auth oroinc/composer:1.4 config -g github-oauth.github.com <YOUR_GITHUB_AUTH_TOKEN>
     ```
 
 4. Define environment variable with application env mode (prod or dev, prod by default)
     ```
     export SYMFONY_ENV=prod
     ```
-    > This variable is required
+    > This variable is optional (will be in prod mode if not defined)
 
 5. Run docker compose
     ```
     docker-compose -p oro -f environment/php71_nginx_pgsql_full_ee.yml up
     ```
-    > This variable is optional (will be in prod mode if not defined)
+    > you can use php71_nginx_mysql_full_ce.yml or php71_nginx_mysql_full_ee.yml for different setups
 
 6. Wait until composer vendors installation. Proceed once you see next message
     
